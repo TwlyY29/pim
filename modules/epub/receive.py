@@ -10,7 +10,7 @@ from mailhelper.functions import parseSender, parseHeader, replyStatus, replyWit
 #sys.path.append('/path/to/installation/of/twlyy29-websiteasepub')
 import websiteasepub
 
-def handle(msg, isreply=False):
+def receive(msg, isreply=False):
   websiteasepub.init(_basepath="../../", #specify where epubs are written to. defaults to './' 
       #_dict="/var/mail/epubs/known_hosts.json", 
       _dict="known_hosts.json", #specify filename if you wish to save functioning css classes for URLs. file is created (if necessary) in _basepath

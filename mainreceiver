@@ -6,7 +6,7 @@ import email.generator
 
 import modules
 
-from mailhelper.functions import parseSender, parseHeader
+from mailhelper.functions import parseSender, parseHeader, replyStatus
 from constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
 
 ALLOWED_MAILADDRESSES=['yourmail@gmail.com','yourmail@yahoo.com', 'me@work.biz'] # only mails from these addresses will be accepted
@@ -69,11 +69,11 @@ logger.info('mail has subj '+subj)
 
 isreply = any(subj.startswith(word) for word in REPLYSIGNS)
 if not isreply:
-  if modules.handle(subj,msg):
+  if modules.receive(subj,msg):
     logger.info("successfully handled mail")
     sys.exit(0)
 elif isreply:
-  if modules.handlereply(subj,msg):
+  if modules.receivereply(subj,msg):
     logger.info("successfully handled mail")
     sys.exit(0)
 else:

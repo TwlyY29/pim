@@ -1,17 +1,18 @@
+import os
 from datetime import date
 from datetime import datetime
 from email.utils import parsedate_tz, mktime_tz
 
 from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
-OUTFILE = '../../reminders-remarkable'
+from . import OUTFILE
 
-def handle(msg, isreply=False):
+def receive(msg, isreply=False):
   sender = parseSender(msg['from'])
   try:
-    thefile = open(OUTFILE, 'r+', encoding='utf-8')
+    thefile = open(OUTFILE, 'r+' if os.path.isfile(OUTFILE) else 'w+', encoding='utf-8')
   except IOError as ioe:
-    replyStatus(sender, 'error saving remarkable: could not open '+OUTFILE+'\n'+ioe.getMessage())
+    replyStatus(sender, 'error saving remarkable: could not open '+OUTFILE+'\n')
   else:
     date = None
     date_tuple = parsedate_tz(msg['Date'])

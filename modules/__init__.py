@@ -14,26 +14,34 @@ __themodules = list(filter(lambda p: os.path.isdir(os.path.join(__filepath,p)) a
 
 del __filepath
 
-def handle(key,msg):
+def receive(key,msg):
   if key not in __themodules:
     eprint("module '{}' not installed".format(key))
     return False
   
   _themod = importlib.import_module(key)
-  _themod = importlib.import_module('.handle',key)
-  return _themod.handle(msg, isreply = False)
+  _themod = importlib.import_module('.receive',key)
+  return _themod.receive(msg, isreply = False)
 
 
-def handlereply(key,msg):
+def receivereply(key,msg):
   for k in __themodules:
     if k in key:
       _themod = importlib.import_module(key)
       if _themod.HANDLER_ACCEPTS_REPLY:
-        _themod = importlib.import_module('.handle',key)
-        return _themod.handle(msg, True)
+        _themod = importlib.import_module('.receive',key)
+        return _themod.receive(msg, True)
       else:
         eprint("found module '{}' in key '{}' but module doesn't accept replys".format(k,key))
         return False
   return False
         
       
+def getoutput():
+  output = []
+  for m in __themodules:
+    _themod = importlib.import_module(m)
+    if _themod.MODULE_HAS_OUTPUT:
+      _themod = importlib.import_module('.getoutput',m)
+      output.append(_themod.getoutput())
+  return output

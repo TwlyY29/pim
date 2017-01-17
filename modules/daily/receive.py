@@ -1,9 +1,9 @@
 from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
-OUTFILE = '../../reminders-daily'
+from . import OUTFILE
 REMINDERTEMPLATE = 'REM %s MSG %s\n'
 
-def handle(msg, isreply=False):
+def receive(msg, isreply=False):
   sender = parseSender(msg['from'])
   try:
     thefile = open(OUTFILE, 'a', encoding='utf-8')
