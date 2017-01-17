@@ -1,6 +1,6 @@
 from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
-OUTFILE = './reminders-daily'
+OUTFILE = '../../reminders-daily'
 REMINDERTEMPLATE = 'REM %s MSG %s\n'
 
 def handle(msg, isreply=False):

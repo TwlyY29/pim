@@ -6,15 +6,16 @@ from email.utils import parsedate_tz, mktime_tz
 
 from mailhelper.functions import parseSender, parseHeader, replyStatus, replyWithHtmlAndAttachment, getMailTextAndCharset
 
-sys.path.append('/home/mirco/coding/twlyy29-websiteasepub')
+# uncomment if needed - if websiteasepub isn't located in any standard dir
+#sys.path.append('/path/to/installation/of/twlyy29-websiteasepub')
 import websiteasepub
 
 def handle(msg, isreply=False):
-  websiteasepub.init(#_basepath="/var/mail/epubs/", 
-      #_dict="/var/mail/epubs/known_hosts.json",
-      _dict="./known_hosts.json",
-      _attstocompare=['class','id'],
-      _tagstoparse=['div','article','section','main'])
+  websiteasepub.init(_basepath="../../", #specify where epubs are written to. defaults to './' 
+      #_dict="/var/mail/epubs/known_hosts.json", 
+      _dict="known_hosts.json", #specify filename if you wish to save functioning css classes for URLs. file is created (if necessary) in _basepath
+      _attstocompare=['class','id'], #where should CSS-IDs be taken from?
+      _tagstoparse=['div','article','section','main']) #which HTML-elements should be considered?
   
   sender = parseSender(msg['from'])
   text,charset = getMailTextAndCharset(msg)

@@ -1,0 +1,79 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+BASEPATH='./'
+
+
+REMINDTYPEFILE='f'
+REMINDTYPECMD ='c'
+REMINDPIPE='remind -ga -k"echo %s" -'
+REMINDFILES=[
+{REMINDTYPEFILE:BASEPATH+'reminders-daily', 'txt':'Let yourself be reminded of some important stuff:\n'},
+{REMINDTYPECMD:'wget -q -O- http://www.google.com/calendar/ical/8saefumocvgmlnep6jjescdsd8%40group.calendar.google.com/public/basic.ics | ./ical2rem.pl --lead-time 1 | '+REMINDPIPE, 'txt':'\nEuro 2016 schedule for today:\n'},
+{REMINDTYPECMD:'cat '+BASEPATH+'reminders-remarkable','txt':'\nSome shit you find noteworthy:\n',NOREMINDOUTPUT:True},
+]
+SUBJECT='Teux Deux'
+TEXT='''Good Morning Mirco!
+
+$body
+'''
+BODY='''$txt$reminder'''
+REMINDERLINE='* %s\n'
+
+NOREMINDOUTPUT='noremind'
+
+from email.mime.text import MIMEText
+from email.mime.nonmultipart import MIMENonMultipart
+from string import Template
+import os.path, subprocess
+from subprocess import CalledProcessError, check_output, Popen, PIPE
+import email.charset 
+import locale
+try:
+  locale.setlocale(locale.LC_ALL, 'de_DE')
+except locale.Error:
+  try:
+    locale.setlocale(locale.LC_ALL, 'de_DE.utf8')
+  except locale.Error:
+    print "both de_DE and de_DE.utf8 could not be set"
+
+from maillhelper import MIMEUTF8QPText
+
+from constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
+
+mailtext={'body':''}
+for remindfile in REMINDFILES:
+  reminder = None
+  if REMINDTYPEFILE in remindfile:
+    if not os.path.isfile(remindfile[REMINDTYPEFILE]):
+      continue
+    cmd = "su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" "+remindfile[REMINDTYPEFILE]+"\""
+    try:
+      reminder = check_output([cmd], shell=True)
+    except CalledProcessError as e:
+      continue
+  elif REMINDTYPECMD in remindfile:
+    try:
+      reminder = check_output([remindfile[REMINDTYPECMD]], shell=True)
+    except CalledProcessError as e:
+      continue
+  if reminder is None or "No reminders" in reminder: 
+    continue
+  substitution = {'txt':remindfile['txt'], 'reminder':'', 'body':''}
+  if NOREMINDOUTPUT in remindfile and remindfile[NOREMINDOUTPUT]:
+    substitution['reminder'] = reminder
+  else:
+    reminder = reminder.strip().split('\n')
+    for r in reminder:
+      substitution['reminder'] += REMINDERLINE % r
+  substitution['body'] = Template(BODY).substitute(substitution)
+  mailtext['body'] += substitution['body']
+
+if not mailtext['body'] == '':
+  mail = MIMEUTF8QPText(Template(TEXT).substitute(mailtext))
+  mail['Subject'] = SUBJECT
+  mail['From'] = FROM_FOR_MAILS
+  mail['To'] = MAIN_EMAIL_ADDRESS
+  #print mail
+  p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+  p.communicate(mail.as_string())

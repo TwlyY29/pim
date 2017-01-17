@@ -4,7 +4,7 @@ from email.utils import parsedate_tz, mktime_tz
 
 from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
-OUTFILE = './reminders-remarkable'
+OUTFILE = '../../reminders-remarkable'
 
 def handle(msg, isreply=False):
   sender = parseSender(msg['from'])

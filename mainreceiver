@@ -7,21 +7,20 @@ import email.generator
 import modules
 
 from mailhelper.functions import parseSender, parseHeader
+from constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
 
-EMERGENCY_ADDRESS='mirco.schoenfeld@phir.org'
-ALLOWED_MAILADDRESSES=['mirco.schoenfeld@ifi.lmu.de','mirco.schoenfeld@digitalestadtmuenchen.de', 'mirco.schoenfeld@phir.org']
+ALLOWED_MAILADDRESSES=['yourmail@gmail.com','yourmail@yahoo.com', 'me@work.biz'] # only mails from these addresses will be accepted
 
-SUBJECT_FOR_REPLY='[reminder] Status'
-FROM_FOR_REPLY='reminder@mircoschoenfeld.de'
+SUBJECT_FOR_REPLY='[PIM] Status'
 
 BASEPATH = './'
-SAVEMAIL = os.path.join(BASEPATH,'lastmail')
-REPLYSIGNS=('re:','aw:')
+SAVEMAIL = os.path.join(BASEPATH,'lastmail') # kind-of-debug-feature. this file holds the last mail received. 
+REPLYSIGNS=('re:','aw:') # prefixes for answered mails
 
 
 def initLogger():
     import logging
-    logger = logging.getLogger('receivereminder')
+    logger = logging.getLogger('mainreceiver')
     hdlr = logging.FileHandler(os.path.join(BASEPATH,'pim.log'))
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     hdlr.setFormatter(formatter)
@@ -48,7 +47,7 @@ for recip in ALLOWED_MAILADDRESSES:
     break
 if not accept: 
   if logger is not None: logger.info('declining mail from %s', sender)
-  replyStatus(EMERGENCY_ADDRESS,'incoming reminder from unallowed mail: '+sender+'\n', subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_REPLY)
+  replyStatus(MAIN_EMAIL_ADDRESS,'incoming reminder from unallowed mail: '+sender+'\n', subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS)
   sys.exit(1)
 
 logger.info('running as %s', getpass.getuser())
@@ -80,5 +79,5 @@ elif isreply:
 else:
   logThis = 'could not determine action. msg-subject was \''+msg['Subject']+'\' - parsed to \''+subj+'\')'
   logger.warn(logThis)
-  replyStatus(sender, logThis, subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_REPLY)
+  replyStatus(sender, logThis, subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS)
   sys.exit(1)
