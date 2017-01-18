@@ -80,3 +80,5 @@ To configure your mailserver to pipe an incoming mail to `mainreceiver` simply a
 to `/etc/aliases/`. Be careful to set correct permissions and ownership since `sendmail` is a little touchy with those. 
 
 ## Installation
+
+coming soon :)
