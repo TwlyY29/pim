@@ -14,7 +14,7 @@ TEXT='''Some shit you find noteworthy:
 $remarkable
 '''
 
-def getoutput():
+def summarizenotes():
   if os.path.isfile(OUTFILE):
     cmd = "cat {}".format(OUTFILE)
     try:

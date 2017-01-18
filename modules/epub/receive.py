@@ -11,7 +11,7 @@ from mailhelper.functions import parseSender, parseHeader, replyStatus, replyWit
 import websiteasepub
 
 def receive(msg, isreply=False):
-  websiteasepub.init(_basepath="../../", #specify where epubs are written to. defaults to './' 
+  websiteasepub.init(_basepath="./", #specify where epubs are written to. defaults to './' 
       #_dict="/var/mail/epubs/known_hosts.json", 
       _dict="known_hosts.json", #specify filename if you wish to save functioning css classes for URLs. file is created (if necessary) in _basepath
       _attstocompare=['class','id'], #where should CSS-IDs be taken from?

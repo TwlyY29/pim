@@ -41,7 +41,7 @@ def getoutput():
   output = []
   for m in __themodules:
     _themod = importlib.import_module(m)
-    if _themod.MODULE_HAS_OUTPUT:
-      _themod = importlib.import_module('.getoutput',m)
-      output.append(_themod.getoutput())
+    if _themod.MODULE_OUTPUT:
+      _thefuncs = importlib.import_module(".{}".format(_themod.MODULE_OUTPUT),m)
+      output.append(getattr(_thefuncs,_themod.MODULE_OUTPUT)())
   return output

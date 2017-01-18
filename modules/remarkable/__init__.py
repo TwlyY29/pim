@@ -1,3 +1,3 @@
 HANDLER_ACCEPTS_REPLY = False
-MODULE_HAS_OUTPUT = True
+MODULE_OUTPUT = 'summarizenotes'
 OUTFILE = './reminders-remarkable'

@@ -23,7 +23,7 @@ CMDS=[
 #"wget -q -O- http://www.google.com/calendar/ical/8saefumocvgmlnep6jjescdsd8%40group.calendar.google.com/public/basic.ics | /home/mirco/coding/twlyy29-pim/modules/daily/ical2rem.pl --lead-time 1 | {} -".format(REMINDCMD)
 ]
 
-def getoutput():
+def getreminders():
   reminders = ''
   for cmd in CMDS:
     try:
