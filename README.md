@@ -56,7 +56,7 @@ This module provides an "email-frontend" to my script from [my other repo](TwlyY
 
 To prevent the epub from containing any non-article-parts of the website, only the content of a certain HTML-element with a certain CSS-`class` or -`id` is taken. To help you select the element and CSS-token the script first sends you a DOM-tree of the relevant HTML elements with their corresponding CSS identifiers. You can reply to that message providing only the relevant CSS-`class` or -`id` the content should be taken from. Of course, the URL and the selected CSS-identifier are saved for later reuse. The next time you want to save an article from that URL the known CSS-identifier will be used. 
 
-The conversion from HTML to epub is based on [pandoc](http://pandoc.org/). Again, this is a sys-call to `pandoc`. You may have to specify the exact path. But that is documented at TwlyY29/websiteasepub in more detail. 
+The conversion from HTML to epub is based on [pandoc](http://pandoc.org/). Again, this is a sys-call to `pandoc`. You may have to specify the exact path. But that is documented at [TwlyY29/websiteasepub](TwlyY29/websiteasepub) in more detail. 
 
 Here, it is worth noting that the module does not provide any summary. Therefore, the `MODULE_OUTPUT` inside `__init__.py` is set to `False`. But, at the same place, the `HANDLER_ACCEPTS_REPLY`-switch is activated. This means that this module can react on an email-reply. That is elaborated in the next section in more detail. 
 
