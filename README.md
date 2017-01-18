@@ -72,7 +72,7 @@ The second entry-point of the program is the `sendreminder`. This script doesn't
 * mailserver accepting mails
 * `sendmail`
 * [pandoc](http://pandoc.org/) for `epub`-module
-* TwlyY29/websiteasepub for `epub`-module
+* [TwlyY29/websiteasepub](TwlyY29/websiteasepub) for `epub`-module
 * [remind](https://linux.die.net/man/1/remind) for `daily`-module
 
 To configure your mailserver to pipe an incoming mail to `mainreceiver` simply add 
