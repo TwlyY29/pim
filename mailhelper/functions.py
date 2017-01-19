@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 import re
 from subprocess import Popen, PIPE
 
+from .constants import FROM_FOR_MAILS, SUBJECT_FOR_REPLY
 from .MIMEUTF8QPText import MIMEUTF8QPText
 
 def getMailTextAndCharset(msg):
@@ -34,7 +35,7 @@ def parseSender(toParse):
   return sender.lower()
 
 
-def replyStatus(to, status, subj = 'no subject', sender = 'noreply@nodomain.com'):
+def replyStatus(to, status, subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS):
     mail = MIMEUTF8QPText(status + '\n')
     mail['Subject'] = Header(subj).encode()
     mail['From'] = sender
@@ -43,7 +44,7 @@ def replyStatus(to, status, subj = 'no subject', sender = 'noreply@nodomain.com'
     p.communicate(str.encode(mail.as_string()))
 
 
-def replyWithHtmlAndAttachment(to, htmlfile, attchdfile, subj = 'no subject', sender = 'noreply@nodomain.com'):
+def replyWithHtmlAndAttachment(to, htmlfile, attchdfile, subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS):
     mail = MIMEMultipart()
     mail['Subject'] = Header(subj).encode()
     mail['From'] = sender

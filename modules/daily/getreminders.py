@@ -10,34 +10,40 @@ from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
 from . import OUTFILE
 
-TEXT='''Let yourself be reminded of some important stuff:
+TEXT='''$customtitle
 
 $reminders
+
 '''
 REMINDERLINE='* %s\n'
-
 REMINDCMD = "/usr/bin/remind -ga -k\"echo %s\""
+
+RMDTITLE='customtitle'
+RMDLIST='reminders'
+RMDCMD='cmd'
+
 CMDS=[
-#"su mail -c \"{}\" {}\"".format(REMINDCMD,OUTFILE),
-"{} {}".format(REMINDCMD,OUTFILE),
-#"wget -q -O- http://www.google.com/calendar/ical/8saefumocvgmlnep6jjescdsd8%40group.calendar.google.com/public/basic.ics | /home/mirco/coding/twlyy29-pim/modules/daily/ical2rem.pl --lead-time 1 | {} -".format(REMINDCMD)
+{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" {}\"".format(OUTFILE)},
+#"{} {}".format(REMINDCMD,OUTFILE),
+{RMDTITLE:'Today at Sports and Health:', RMDCMD:"wget -q -O- http://www.sports-and-health.de/events.ics | ./modules/daily/ical2rem.pl --lead-time 0 | {} -".format(REMINDCMD)}
 ]
 
 def getreminders():
-  reminders = ''
+  output = ''
   for cmd in CMDS:
     try:
-      print("trying '{}'".format(cmd))
-      reminder = check_output([cmd], shell=True)
+      #print("trying '{}'".format(cmd[RMDCMD]))
+      reminder = check_output([cmd[RMDCMD]], shell=True)
       if reminder is None or "No reminders" in reminder: 
-        return False
+        continue
       else:
         reminder = reminder.strip().split('\n')
+        reminders = ''
         for r in reminder:
           reminders += REMINDERLINE % r
+        reminder = Template(TEXT).substitute({RMDTITLE:cmd[RMDTITLE],RMDLIST:reminders})
+        output = "{}{}".format(output,reminder)
     except CalledProcessError as e:
       pass
-  if reminders is not '':
-    return Template(TEXT).substitute({'reminders':reminders})
-  return False
+  return output if output is not '' else False
   

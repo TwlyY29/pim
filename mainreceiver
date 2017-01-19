@@ -6,17 +6,14 @@ import email.generator
 
 import modules
 
+from mailhelper.constants import MAIN_EMAIL_ADDRESS
 from mailhelper.functions import parseSender, parseHeader, replyStatus
-from constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
 
 ALLOWED_MAILADDRESSES=['yourmail@gmail.com','yourmail@yahoo.com', 'me@work.biz'] # only mails from these addresses will be accepted
-
-SUBJECT_FOR_REPLY='[PIM] Status'
 
 BASEPATH = './'
 SAVEMAIL = os.path.join(BASEPATH,'lastmail') # kind-of-debug-feature. this file holds the last mail received. 
 REPLYSIGNS=('re:','aw:') # prefixes for answered mails
-
 
 def initLogger():
     import logging
@@ -47,7 +44,7 @@ for recip in ALLOWED_MAILADDRESSES:
     break
 if not accept: 
   if logger is not None: logger.info('declining mail from %s', sender)
-  replyStatus(MAIN_EMAIL_ADDRESS,'incoming reminder from unallowed mail: '+sender+'\n', subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS)
+  replyStatus(MAIN_EMAIL_ADDRESS,'incoming reminder from unallowed mail: '+sender+'\n')
   sys.exit(1)
 
 logger.info('running as %s', getpass.getuser())
@@ -79,5 +76,5 @@ elif isreply:
 else:
   logThis = 'could not determine action. msg-subject was \''+msg['Subject']+'\' - parsed to \''+subj+'\')'
   logger.warn(logThis)
-  replyStatus(sender, logThis, subj = SUBJECT_FOR_REPLY, sender = FROM_FOR_MAILS)
+  replyStatus(sender, logThis)
   sys.exit(1)

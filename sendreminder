@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-BASEPATH='./'
-
 SUBJECT='Teux Deux'
 TEXT='''Good Morning Mirco!
 
@@ -11,8 +9,6 @@ $body
 Regards,
 Your Computer
 '''
-REMINDERLINE='* %s\n'
-
 
 from string import Template
 from subprocess import Popen, PIPE
@@ -26,9 +22,9 @@ except locale.Error:
     print "both de_DE and de_DE.utf8 could not be set"
 
 import modules
+from mailhelper.constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
 from mailhelper.MIMEUTF8QPText import MIMEUTF8QPText
 
-from constants import MAIN_EMAIL_ADDRESS, FROM_FOR_MAILS
 
 mailtext={'body':''}
 
@@ -41,6 +37,6 @@ if not mailtext['body'] == '':
   mail['Subject'] = SUBJECT
   mail['From'] = FROM_FOR_MAILS
   mail['To'] = MAIN_EMAIL_ADDRESS
-  print mail
-  #p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
-  #p.communicate(mail.as_string())
+  #print mail
+  p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+  p.communicate(mail.as_string())
