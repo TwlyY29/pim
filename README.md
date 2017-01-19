@@ -49,7 +49,7 @@ The summary originates from a sys-call to `remind`, of course. So, maybe, you ha
 
 But wait, there is more!
 
-You can specify a URL to a iCal-file inside the `getreminders.py` which is then downloaded, translated into another `remind`-compatible file, and processed via `remind`, separately. The summary of those events are appended to the summary above. Download and translation are also sys-calls -- in this case to `wget` and the nifty script `ical2rem.pl` I found at [dsoulayrol's github](https://github.com/dsoulayrol/config/blob/master/scripts/ical2rem.pl). An example for this usecase can be found inside `getreminders.py` in the `CMDS`-array. You might need to adjust the path to the Perl-Script, there...
+You can specify a URL to a iCal-file inside the `getreminders.py` which is then downloaded, translated into another `remind`-compatible file, and processed via `remind`, separately. The summary of those events are appended to the summary above. Download and translation are also sys-calls -- in this case to `wget` and the nifty script `ical2rem.pl` I found at [dsoulayrol's github](https://github.com/dsoulayrol/config/blob/master/scripts/ical2rem.pl). An example for this usecase can be found inside `getreminders.py` in the `CMDS`-array. As you can see there, every iCal-file gets its own title in the output.
 
 ### Module: `epub`
 This module provides an "email-frontend" to my script from [my other repo](https://github.com/TwlyY29/websiteasepub): You can send yourself a link to a webpage which is then downloaded, converted into an epub-file and sent back to you, immediately. 
