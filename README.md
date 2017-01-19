@@ -76,7 +76,9 @@ The second entry-point of the program is the `sendreminder`. This script doesn't
 * [remind](https://linux.die.net/man/1/remind) for `daily`-module
 
 To configure your mailserver to pipe an incoming mail to `mainreceiver` simply add 
+```
     name-part-of-email-address: "| /etc/mail/smrsh/mainreceiver"
+```
 to `/etc/aliases/`. Be careful to set correct permissions and ownership since `sendmail` is a little touchy with those. 
 
 ## Installation
