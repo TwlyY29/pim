@@ -1,4 +1,4 @@
-import sys
+import os,sys
 
 from datetime import date
 from datetime import datetime
@@ -6,8 +6,8 @@ from email.utils import parsedate_tz, mktime_tz
 
 from mailhelper.functions import parseSender, parseHeader, replyStatus, replyWithHtmlAndAttachment, getMailTextAndCharset
 
-# uncomment if needed - if websiteasepub isn't located in any standard dir
-#sys.path.append('/path/to/installation/of/twlyy29-websiteasepub')
+__filepath = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(__filepath,'websiteasepub'))
 import websiteasepub
 
 def receive(msg, isreply=False):
