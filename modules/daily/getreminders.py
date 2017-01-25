@@ -10,9 +10,7 @@ from mailhelper.functions import parseSender, replyStatus, getMailTextAndCharset
 
 from . import OUTFILE
 
-TEXT='''$customtitle
-
-$reminders
+TEXT='''$customtitle$reminders
 
 '''
 REMINDERLINE='* %s\n'
@@ -25,10 +23,9 @@ RMDCMD='cmd'
 __filepath = os.path.dirname(os.path.realpath(__file__))
 
 CMDS=[
-#{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" {}\"".format(OUTFILE)},
-{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"{} {}".format(REMINDCMD,OUTFILE)},
-{RMDTITLE:'Today is a holiday:', RMDCMD:"wget -q -0- https://www.mozilla.org/media/caldata/GermanHolidays.ics | {}/ical2rem.pl --lead-time 0 | {} -".format(__filepath,REMINDCMD)}
-
+#{RMDTITLE:'Let yourself be reminded of some important stuff:\n\n', RMDCMD:"su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" {}\"".format(OUTFILE)},
+{RMDTITLE:'Let yourself be reminded of some important stuff:\n\n', RMDCMD:"{} {}".format(REMINDCMD,OUTFILE)},
+{RMDTITLE:'Today is a holiday:\n\n', RMDCMD:"wget -q -O- https://www.mozilla.org/media/caldata/GermanHolidays.ics | {}/ical2rem.pl --lead-time 0 | {} -".format(__filepath,REMINDCMD)}
 ]
 
 def getreminders():
