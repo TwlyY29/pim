@@ -22,10 +22,13 @@ RMDTITLE='customtitle'
 RMDLIST='reminders'
 RMDCMD='cmd'
 
+__filepath = os.path.dirname(os.path.realpath(__file__))
+
 CMDS=[
-{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" {}\"".format(OUTFILE)},
-#"{} {}".format(REMINDCMD,OUTFILE),
-{RMDTITLE:'Today at Sports and Health:', RMDCMD:"wget -q -O- http://www.sports-and-health.de/events.ics | ./modules/daily/ical2rem.pl --lead-time 0 | {} -".format(REMINDCMD)}
+#{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"su mail -c \"/usr/bin/remind -ga -k\\\"echo %s\\\" {}\"".format(OUTFILE)},
+{RMDTITLE:'Let yourself be reminded of some important stuff:', RMDCMD:"{} {}".format(REMINDCMD,OUTFILE)},
+{RMDTITLE:'Today is a holiday:', RMDCMD:"wget -q -0- https://www.mozilla.org/media/caldata/GermanHolidays.ics | {}/ical2rem.pl --lead-time 0 | {} -".format(__filepath,REMINDCMD)}
+
 ]
 
 def getreminders():

@@ -37,6 +37,6 @@ if not mailtext['body'] == '':
   mail['Subject'] = SUBJECT
   mail['From'] = FROM_FOR_MAILS
   mail['To'] = MAIN_EMAIL_ADDRESS
-  #print mail
-  p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
-  p.communicate(mail.as_string())
+  print mail
+  #p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+  #p.communicate(mail.as_string())
