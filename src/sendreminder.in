@@ -61,5 +61,5 @@ mail['To'] = config['Base']['receiver']
   
 # ~ print("hello")
 # ~ print(mail)
-p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE, universal_newlines=True)
 p.communicate(mail.as_string())

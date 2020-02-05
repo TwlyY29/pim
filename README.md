@@ -12,9 +12,14 @@ Please refer to [my website](http://mircoschoenfeld.de/personal-information-mana
 
 
 ## Requirements
+* Python >= 3.5
 * mailserver accepting mails
 * `sendmail`
-* [remind](https://linux.die.net/man/1/remind) for `daily`-module
+
+For `daily`-module:
+* [remind](https://linux.die.net/man/1/remind)
+* Python-package `dateparser` (install using `pip3 install dateparser`)
+* Perl-package `iCal::Parser` (install using `cpan iCal::Parser`)
 
 
 ## Installation
