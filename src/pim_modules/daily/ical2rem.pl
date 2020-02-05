@@ -109,6 +109,7 @@ $VERSION = "0.5.2";
 # Declare how many days in advance to remind
 my $DEFAULT_LEAD_TIME = 3;
 my $PROCESS_TODOS     = 1;
+my $PROCESS_LOCATION  = 1;
 my $HEADING			  = "";
 my $help;
 my $man;
@@ -118,6 +119,7 @@ GetOptions (
 	"label=s"     => \$label,
 	"lead-time=i" => \$DEFAULT_LEAD_TIME,
 	"todos!"	  => \$PROCESS_TODOS,
+	"location!"	  => \$PROCESS_LOCATION,
 	"heading=s"	  => \$HEADING,
 	"help|?" 	  => \$help, 
 	"man" 	 	  => \$man
@@ -243,6 +245,7 @@ foreach $yearkey (sort keys %{$events} ) {
                     my $curreventday = $event->{'DTSTART'}->clone;
                     $curreventday->truncate( to => 'day' );
                     $eventsbyuid{$uid}{$curreventday->epoch()} =1;
+                    
                     for (my $i = 0;$i < $DEFAULT_LEAD_TIME && !defined($event->{'LEADTIME'});$i++) {
                         if ($eventsbyuid{$uid}{$curreventday->subtract( days => $i+1 )->epoch() }) {
                             $event->{'LEADTIME'} = $i;
@@ -279,13 +282,17 @@ foreach $yearkey (sort keys %{$events} ) {
                 if ($start->hour > 0) { 
                     print " AT ";
                     print $start->strftime("%H:%M");
+                    #my $time = $start->strftime("%H:%M");
                     # print " SCHED _sfun MSG %a %2 ";
                     print " MSG %a %2 "; # removed sfun: mirco
+                    #print "%\"$time - $event->{'SUMMARY'}";
                 } else {
                     print " MSG %a ";
                 }
                 print "%\"$event->{'SUMMARY'}";
-                print " at $event->{'LOCATION'}" if $event->{'LOCATION'};
+                if ($PROCESS_LOCATION) {
+                  print " at $event->{'LOCATION'}" if $event->{'LOCATION'};
+                }
                 print "\%\"%\n";
             }
         }

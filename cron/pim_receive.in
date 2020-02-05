@@ -1,0 +1,6 @@
+# sendreminder cron-job
+# part of the @PACKAGE_NAME@, v. @VERSION@
+# @PACKAGE_BUGREPORT@
+SHELL=/bin/sh
+PATH=@EXEC_RECEIVER_PATH@
+@CRONPATTERN@ root sendreminder

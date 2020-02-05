@@ -1,18 +1,24 @@
-#!/usr/bin/python3
+#!/usr/bin/env @PYTHON@
 # -*- coding: utf-8 -*-
+# mainreceiver
+# part of the @PACKAGE_NAME@, v. @VERSION@
+# @PACKAGE_BUGREPORT@
 
-import os, sys, email, getpass
+import sys
+sys.path.insert(1, '@pythondir@')
+
+import os, email, getpass
 import email.generator
+import configparser
 
-import modules
+import pim_modules
+from pim_mailhelper.functions import parseSender, parseHeader, replyStatus
 
-from mailhelper.constants import MAIN_EMAIL_ADDRESS
-from mailhelper.functions import parseSender, parseHeader, replyStatus
+ALLOWED_MAILADDRESSES=[] # only mails from these addresses will be accepted
 
-ALLOWED_MAILADDRESSES=['yourmail@gmail.com','yourmail@yahoo.com', 'me@work.biz'] # only mails from these addresses will be accepted
-
-BASEPATH = './'
-SAVEMAIL = os.path.join(BASEPATH,'lastmail') # kind-of-debug-feature. this file holds the last mail received. 
+BASEPATH = '@RCV_BASE_PATH@'
+# ~ SAVEMAIL = os.path.join(BASEPATH,'lastmail') # kind-of-debug-feature. this file holds the last mail received. 
+SAVEMAIL = ''
 REPLYSIGNS=('re:','aw:') # prefixes for answered mails
 
 def initLogger():
@@ -27,6 +33,11 @@ def initLogger():
 
 logger = initLogger()
 
+config = configparser.ConfigParser()
+config.read('@pimconfdir@/config.ini')
+
+ALLOWED_MAILADDRESSES = [mail for mail in config['Base']['allowed_senders'].split(',')]
+logger.info("read allowed senders from config: "+", ".join(ALLOWED_MAILADDRESSES))
 
 msg = email.message_from_file(sys.stdin)
 accept = False
@@ -37,14 +48,17 @@ if sender == 'unknown':
   sys.exit(1)
 
 # accept message?
-for recip in ALLOWED_MAILADDRESSES:
-  if recip in sender:
-    sender = recip
-    accept = True
-    break
+if len(ALLOWED_MAILADDRESSES) == 0:
+  accept = True
+else:
+  for recip in ALLOWED_MAILADDRESSES:
+    if recip in sender:
+      sender = recip
+      accept = True
+      break
 if not accept: 
   if logger is not None: logger.info('declining mail from %s', sender)
-  replyStatus(MAIN_EMAIL_ADDRESS,'incoming reminder from unallowed mail: '+sender+'\n')
+  replyStatus(config['Base']['receiver'],'incoming reminder from unallowed mail: '+sender+'\n')
   sys.exit(1)
 
 logger.info('running as %s', getpass.getuser())
@@ -66,15 +80,15 @@ logger.info('mail has subj '+subj)
 
 isreply = any(subj.startswith(word) for word in REPLYSIGNS)
 if not isreply:
-  if modules.receive(subj,msg):
+  if pim_modules.receive(subj,msg):
     logger.info("successfully handled mail")
     sys.exit(0)
 elif isreply:
-  if modules.receivereply(subj,msg):
+  if pim_modules.receivereply(subj,msg):
     logger.info("successfully handled mail")
     sys.exit(0)
 else:
   logThis = 'could not determine action. msg-subject was \''+msg['Subject']+'\' - parsed to \''+subj+'\')'
   logger.warn(logThis)
-  replyStatus(sender, logThis)
+  replyStatus(sender, logThis, config['Base']['subject_in_reply'], config['Base']['dummy_sender'])
   sys.exit(1)

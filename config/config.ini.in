@@ -1,0 +1,13 @@
+[Base]
+allowed_senders = a@b.cd
+receiver = me@somwhere.de
+dummy_sender = reminder@somewhere.de
+subject_in_reply = [reminder] Status
+
+[daily]
+subject = Teux Deux
+my_name = Me
+
+[daily_1]
+title=Let yourself be reminded of some important stuff
+command=#REMINDFROMFILE# @STD_REMINDER_FILE@

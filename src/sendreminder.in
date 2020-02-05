@@ -1,0 +1,65 @@
+#!/usr/bin/env @PYTHON@
+# -*- coding: utf-8 -*-
+# sendreminder
+# part of the @PACKAGE_NAME@, v. @VERSION@
+# @PACKAGE_BUGREPORT@
+
+import sys
+sys.path.insert(1, '@pythondir@')
+
+TEXT='''Good Morning $name!
+
+$body
+
+Regards,
+Your Computer
+'''
+
+from string import Template
+from subprocess import Popen, PIPE
+import os,locale,sys
+
+import configparser
+import pim_modules
+from email.header import Header
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from pim_mailhelper.MIMEUTF8QPText import MIMEUTF8QPText
+
+config = configparser.ConfigParser()
+config.read('@pimconfdir@/config.ini')
+
+mailtext={'body':'','name':config['daily']['my_name']}
+attachments=[]
+
+for o in pim_modules.getoutput():
+  if o:
+    mailtext['body'] += "\n\n{}".format(o.strip()) if mailtext['body'] is not '' else o.strip()
+
+for a in pim_modules.getattachment():
+  if a:
+    attachments.extend(list(filter(lambda p: os.path.isfile(p), a)))
+
+#mail = None
+if not attachments:
+  if mailtext['body'] == '':
+    sys.exit(0)
+  mail = MIMEUTF8QPText(Template(TEXT).substitute(mailtext))
+else:
+  mail = MIMEMultipart()
+  for a in attachments:
+    with open(a,"rb") as fp_attch:
+      part = MIMEApplication(fp_attch.read())
+      part.add_header('Content-Disposition', 'attachment', filename=os.path.basename(a) )
+      mail.attach(part)
+  
+  mail.attach(MIMEText(Template(TEXT).substitute(mailtext), 'plain')) 
+mail['Subject'] = Header(config['daily']['subject']).encode()
+mail['From'] = config['Base']['dummy_sender']
+mail['To'] = config['Base']['receiver']
+  
+# ~ print("hello")
+# ~ print(mail)
+p = Popen(["/usr/sbin/sendmail", "-t", "-oi"], stdin=PIPE)
+p.communicate(mail.as_string())
