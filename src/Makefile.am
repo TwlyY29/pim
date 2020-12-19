@@ -22,3 +22,8 @@ sendreminder: sendreminder.in Makefile
 
 dist-hook:
 	rm -f $(distdir)/mainreceiver $(distdir)/sendreminder
+
+install-exec-hook:
+	touch "$(RCV_BASE_PATH)/pim.log"
+	chgrp $(MAIL_USER) "$(RCV_BASE_PATH)/pim.log"
+	chmod g+w "$(RCV_BASE_PATH)/pim.log"

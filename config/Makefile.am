@@ -4,9 +4,9 @@ EXTRA_DIST = config.ini.in
 
 do_substitution = sed -e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' 
 
-config.ini: config.ini.in Makefile
-	$(do_substitution) < $(srcdir)/config.ini.in > config.ini
+$(pimconf_DATA): $(EXTRA_DIST) Makefile
+	$(do_substitution) < $(srcdir)/$(EXTRA_DIST) > $(pimconf_DATA)
 
 dist-hook:
-	rm -f $(distdir)/config.ini
+	rm -f $(distdir)/$(pimconf_DATA)
 

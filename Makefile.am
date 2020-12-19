@@ -4,10 +4,10 @@ install-exec-hook:
 	touch $(sysconfdir)/aliases
 	sed -i '\@$(MAILALIAS)\:\t"\| $(DESTDIR)$(bindir)/mainreceiver"$\@d' $(sysconfdir)/aliases
 	echo -e "$(MAILALIAS):\t\"| "$(DESTDIR)$(bindir)"/mainreceiver\"" >> $(sysconfdir)/aliases
-#~ 	newaliases
-#~ 	postfix reload
+	newaliases
+	postfix reload
 
 uninstall-hook:
 	sed -i '\@$(MAILALIAS)\:\t"\| $(DESTDIR)$(bindir)/mainreceiver"$\@d' $(sysconfdir)/aliases
-#~ 	newaliases
-#~ 	postfix reload
+	newaliases
+	postfix reload

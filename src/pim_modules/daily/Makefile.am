@@ -6,6 +6,7 @@ EXTRA_DIST = __init__.py.in ical2rem.pl
 
 do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 		-e 's,[@]DAILY_BASE_PATH[@],$(DAILY_BASE_PATH),g' \
+		-e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' \
 		-e 's,[@]PYTHON[@],$(PYTHON),g' \
 		-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
 		-e 's,[@]RCV_BASE_PATH[@],$(RCV_BASE_PATH),g' \

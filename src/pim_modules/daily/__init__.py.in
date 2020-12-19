@@ -6,5 +6,5 @@
 HANDLER_ACCEPTS_REPLY = False
 MODULE_OUTPUT = 'getreminders'
 MODULE_ATTCHMNT = False
-OUTFILE = '@DAILY_BASE_PATH@/reminders-daily'
+OUTFILE = '@STD_REMINDER_FILE@'
 CONF_FILE= '@pimconfdir@/config.ini'

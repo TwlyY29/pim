@@ -1,5 +1,5 @@
 AC_INIT([Personal Information Manager],
-        0.1,
+        0.1.1,
         TWlyY29@gmail.com,
         pim,
         http://www.mircoschoenfeld.de)
