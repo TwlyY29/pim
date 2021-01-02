@@ -5,7 +5,7 @@ import dateparser
 from datetime import timedelta, date
 
 from . import OUTFILE
-REMINDERTEMPLATE = 'REM %s MSG %s\n'
+REMINDERTEMPLATE = 'REM %s%s MSG %s\n'
 
 def calc_date_diff(thediff, date, before=True):
   days = 0
@@ -50,7 +50,12 @@ def receive(msg, isreply=False):
           # ~ thefile.close()
           written = ''
           for i in range(0,int(len(text)/2)+1,2):
+            offset = ''
             thedate = text[i]
+            if '+' in thedate:
+              s = thedate.split('+')
+              thedate = s[0]
+              offset = ' +'+s[1]
             txt = text[i+1]
             if 'before' in text[i] or 'after' in text[i]:
               if 'before' in text[i]:
@@ -61,22 +66,17 @@ def receive(msg, isreply=False):
                 before=False
               to_calc = s[0].strip()
               thedate = s[1].strip()
-              offset = ''
-              if '+' in thedate:
-                s = thedate.split('+')
-                thedate = s[0]
-                offset = ' +'+s[1]
               if not is_date_ok(thedate):
                 replyStatus(sender,'error handling reminder due to odd date spec \''+thedate+'\'')
                 return False
-              thedate = calc_date_diff(to_calc, dateparser.parse(thedate), before)+offset
+              thedate = calc_date_diff(to_calc, dateparser.parse(thedate), before)
             else:
               if not is_date_ok(thedate):
                 replyStatus(sender,'error handling reminder due to odd date spec \''+thedate+'\'')
                 return False
             if '+' in thedate and '%' not in txt:
               txt = txt + ' %b'
-            written += REMINDERTEMPLATE % (thedate, txt)
+            written += REMINDERTEMPLATE % (thedate, offset, txt)
           thefile.write(written)
           replyStatus(sender,'successfully written reminder:\n\n'+written)
           return True
