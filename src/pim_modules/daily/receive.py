@@ -54,8 +54,8 @@ def receive(msg, isreply=False):
             thedate = text[i]
             if '+' in thedate:
               s = thedate.split('+')
-              thedate = s[0]
-              offset = ' +'+s[1]
+              thedate = s[0].strip()
+              offset = ' +'+s[1].strip()
             txt = text[i+1]
             if 'before' in text[i] or 'after' in text[i]:
               if 'before' in text[i]:
@@ -74,7 +74,7 @@ def receive(msg, isreply=False):
               if not is_date_ok(thedate):
                 replyStatus(sender,'error handling reminder due to odd date spec \''+thedate+'\'')
                 return False
-            if '+' in thedate and '%' not in txt:
+            if offset != '' and '%' not in txt:
               txt = txt + ' %b'
             written += REMINDERTEMPLATE % (thedate, offset, txt)
           thefile.write(written)
