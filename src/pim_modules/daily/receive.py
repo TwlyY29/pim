@@ -5,7 +5,7 @@ import dateparser
 from datetime import timedelta, date
 import configparser
 
-from . import OUTFILE
+from . import OUTFILE, CONF_FILE
 REMINDERTEMPLATE = 'REM %s%s MSG %s\n'
 
 def calc_date_diff(thediff, date, before=True):
