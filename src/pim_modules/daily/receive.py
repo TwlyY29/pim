@@ -3,6 +3,7 @@ from pim_mailhelper.functions import parseSender, replyStatus, getMailTextAndCha
 import re
 import dateparser
 from datetime import timedelta, date
+import configparser
 
 from . import OUTFILE
 REMINDERTEMPLATE = 'REM %s%s MSG %s\n'
@@ -33,6 +34,9 @@ def is_date_ok(thedate):
     return False
 
 def receive(msg, isreply=False):
+  config = configparser.ConfigParser()
+  config.read(CONF_FILE)
+  
   sender = parseSender(msg['from'])
   try:
     thefile = open(OUTFILE, 'a', encoding='utf-8')
@@ -75,7 +79,7 @@ def receive(msg, isreply=False):
                 replyStatus(sender,'error handling reminder due to odd date spec \''+thedate+'\'')
                 return False
             if offset != '' and '%' not in txt:
-              txt = txt + ' %b'
+              txt = txt + conf['daily']['standard_remind_substitutions']
             written += REMINDERTEMPLATE % (thedate, offset, txt)
           thefile.write(written)
           replyStatus(sender,'successfully written reminder:\n\n'+written)

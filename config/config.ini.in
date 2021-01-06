@@ -7,6 +7,7 @@ subject_in_reply = [reminder] Status
 [daily]
 subject = Teux Deux
 my_name = Me
+standard_remind_substitutions = %v (%b)
 
 [daily_1]
 title=Let yourself be reminded of some important stuff
