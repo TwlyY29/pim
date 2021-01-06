@@ -79,7 +79,7 @@ def receive(msg, isreply=False):
                 replyStatus(sender,'error handling reminder due to odd date spec \''+thedate+'\'')
                 return False
             if offset != '' and '%' not in txt:
-              txt = txt + config['daily']['standard_remind_substitution']
+              txt = txt + ' ' + config['daily']['standard_remind_substitution']
             written += REMINDERTEMPLATE % (thedate, offset, txt)
           thefile.write(written)
           replyStatus(sender,'successfully written reminder:\n\n'+written)
