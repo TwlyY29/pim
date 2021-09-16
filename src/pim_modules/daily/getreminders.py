@@ -33,8 +33,7 @@ def parse_command(cmd):
 def parse_entries(conf):
   entries = []
   for sec in conf.sections():
-    if sec.startswith('daily_'):
-      n = sec.split('daily_')[1]
+    if sec.startswith('daily_') and sec != 'daily_statusreport':
       title = parse_title(conf[sec]['title'])
       command = parse_command(conf[sec]['command'])
       entries.append({RMDTITLE:title,RMDCMD:command})

@@ -5,6 +5,6 @@
 
 HANDLER_ACCEPTS_REPLY = False
 MODULE_OUTPUT = 'getreminders'
-MODULE_ATTCHMNT = False
+MODULE_ATTCHMNT = 'getreports'
 OUTFILE = '@STD_REMINDER_FILE@'
 CONF_FILE= '@pimconfdir@/config.ini'

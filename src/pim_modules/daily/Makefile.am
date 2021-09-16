@@ -1,4 +1,4 @@
-daily_PYTHON = getreminders.py receive.py __init__.py
+daily_PYTHON = getreminders.py getreports.py receive.py __init__.py
 daily_SCRIPTS = ical2rem.pl
 dailydir = $(pythondir)/pim_modules/daily
 
