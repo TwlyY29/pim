@@ -24,6 +24,8 @@ AC_SUBST(MAIL_USER,"mail")
 AC_ARG_VAR(MAIL_USER, 'username of mailserver')
 
 AX_PYTHON_MODULE(dateparser, "", python3)
+AX_PYTHON_MODULE([requests], "", python3)
+AX_PYTHON_MODULE(configparser, "", python3)
 
 AC_ARG_ENABLE([daily],
 [AS_HELP_STRING([--disable-daily],[Turn off daily])],
@@ -32,6 +34,20 @@ AC_ARG_ENABLE([daily],
   yes)  daily="no" ;;
   *) AC_MSG_ERROR([bad value ${enableval} for --disable-daily]) ;;
 esac],[daily="yes"])
+
+AC_ARG_ENABLE([daily_weather],
+[AS_HELP_STRING([--enable-daily_weather],[Turn on daily weather report])],
+[case "${enableval}" in
+  no) daily_weather="no" ;;
+  yes)  daily_weather="check" ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-daily_weather]) ;;
+esac],[daily_weather=false])
+
+AS_IF([test "x$daily_weather" = xcheck],
+  [AS_IF([test "x$HAVE_PYMOD_REQUESTS" = x"no"],
+      [AC_MSG_ERROR([missing python module: requests])],
+      [daily_weather=true])])
+AM_CONDITIONAL([INSTALL_DAILY_WEATHER], [test "x$daily_weather" = xtrue])
 
 AS_IF([test "x$daily" != xno],
   [AX_PROG_PERL_MODULES( iCal::Parser,

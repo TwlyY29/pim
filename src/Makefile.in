@@ -679,6 +679,7 @@ dist-hook:
 	rm -f $(distdir)/mainreceiver $(distdir)/sendreminder
 
 install-exec-hook:
+	mkdir -p "$(RCV_BASE_PATH)"
 	touch "$(RCV_BASE_PATH)/pim.log"
 	chgrp $(MAIL_USER) "$(RCV_BASE_PATH)/pim.log"
 	chmod g+w "$(RCV_BASE_PATH)/pim.log"
