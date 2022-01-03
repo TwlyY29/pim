@@ -1,0 +1,5 @@
+[daily_weather_1]
+where=Bayreuth
+lon=11.5783
+lat=49.9481
+api_key=THISISADUMMYKEY

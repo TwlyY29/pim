@@ -88,6 +88,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 @INSTALL_DAILY_WEATHER_TRUE@am__append_1 = -e 's,[@]DAILY_WEATHER_ACTIVATED[@],True,g'
 @INSTALL_DAILY_WEATHER_FALSE@am__append_2 = -e 's,[@]DAILY_WEATHER_ACTIVATED[@],False,g'
+@INSTALL_DAILY_EXPENSES_TRUE@am__append_3 = -e 's,[@]DAILY_EXPENSES_ACTIVATED[@],True,g'
+@INSTALL_DAILY_EXPENSES_FALSE@am__append_4 = -e 's,[@]DAILY_EXPENSES_ACTIVATED[@],False,g'
 subdir = src/pim_modules/daily
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/m4_ax_prog_perl_modules.m4 \
@@ -168,6 +170,7 @@ DEFS = @DEFS@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
+EXPENSES_BASE_PATH = @EXPENSES_BASE_PATH@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -231,11 +234,13 @@ oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
+postfix_exists = @postfix_exists@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
+remind_exists = @remind_exists@
 runstatedir = @runstatedir@
 sbindir = @sbindir@
 sendmail_exists = @sendmail_exists@
@@ -246,7 +251,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-daily_PYTHON = getreminders.py getattachments.py daily_weather.py receive.py __init__.py
+daily_PYTHON = getreminders.py getattachments.py daily_weather.py daily_expenses.py receive.py __init__.py
 daily_SCRIPTS = ical2rem.pl
 dailydir = $(pythondir)/pim_modules/daily
 EXTRA_DIST = __init__.py.in ical2rem.pl
@@ -258,7 +263,8 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' -e \
 	's,[@]pimconfdir[@],$(PIM_CONFDIR),g' -e \
 	's,[@]PACKAGE_NAME[@],$(PACKAGE_NAME),g' -e \
 	's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' -e \
-	's,[@]VERSION[@],$(VERSION),g' $(am__append_1) $(am__append_2)
+	's,[@]VERSION[@],$(VERSION),g' $(am__append_1) $(am__append_2) \
+	$(am__append_3) $(am__append_4)
 all: all-am
 
 .SUFFIXES:

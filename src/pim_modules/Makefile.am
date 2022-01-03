@@ -5,9 +5,13 @@ if INSTALL_DAILY
   MAYBE_DAILY = daily
 endif
 
+if INSTALL_EXPENSES
+  MAYBE_EXPENSES = expenses
+endif
+
 EXTRA_DIST = __init__.py.in
 
-SUBDIRS = $(MAYBE_DAILY)
+SUBDIRS = $(MAYBE_DAILY) $(MAYBE_EXPENSES)
 
 do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 		-e 's,[@]pimconfdir[@],$(PIM_CONFDIR),g'\

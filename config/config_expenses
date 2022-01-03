@@ -1,0 +1,10 @@
+[daily_expenses]
+title=Expense tracker
+databases=fun,taxes
+report_pocket_money_database=fun
+database_fun=@EXPENSES_BASE_PATH@/expenses.tsv
+database_taxes=@EXPENSES_BASE_PATH@/taxes.tsv
+date_pattern=%%Y-%%m-%%d
+report_pocket_money_monthly_amount=50
+report_pocket_money_stats_per_category=True
+report_pocket_money_stats_per_category_top_n=5

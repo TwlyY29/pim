@@ -1,4 +1,4 @@
-daily_PYTHON = getreminders.py getattachments.py daily_weather.py receive.py __init__.py
+daily_PYTHON = getreminders.py getattachments.py daily_weather.py daily_expenses.py receive.py __init__.py
 daily_SCRIPTS = ical2rem.pl
 dailydir = $(pythondir)/pim_modules/daily
 
@@ -20,6 +20,12 @@ if INSTALL_DAILY_WEATHER
 do_substitution += -e 's,[@]DAILY_WEATHER_ACTIVATED[@],True,g'
 else
 do_substitution += -e 's,[@]DAILY_WEATHER_ACTIVATED[@],False,g'
+endif
+
+if INSTALL_DAILY_EXPENSES
+do_substitution += -e 's,[@]DAILY_EXPENSES_ACTIVATED[@],True,g'
+else
+do_substitution += -e 's,[@]DAILY_EXPENSES_ACTIVATED[@],False,g'
 endif
 
 __init__.py: __init__.py.in Makefile

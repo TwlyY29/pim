@@ -35,7 +35,7 @@ attachments=[]
 
 for o in pim_modules.getoutput():
   if o:
-    mailtext['body'] += "\n\n{}".format(o.strip()) if mailtext['body'] is not '' else o.strip()
+    mailtext['body'] += "\n\n{}".format(o.strip()) if mailtext['body'] != '' else o.strip()
 
 for a in pim_modules.getattachment():
   if a:

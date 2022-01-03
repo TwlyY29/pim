@@ -46,7 +46,7 @@ def parse_entries(conf):
         command = parse_command(conf[sec]['command'])
         entries.append({RMDTITLE:title,RMDCMD:command})
       else:
-        key = sec[0:sec.rfind('_')]
+        key = sec[0:sec.rfind('_')] if sec.count('_') > 1 else sec
         if SUBMODS[key]:
           entries.append({RMDMOD:key, RMDSEC:sec})
   return entries
@@ -80,10 +80,12 @@ def getreminders():
         sys.path.append(__filepath)
         appended_sys_path = True
       themod = importlib.import_module(cmd[RMDMOD])
-      customtitle, reminders = themod.compile_output(cmd[RMDSEC], CONF_FILE)
-      customtitle = "\n\n{}\n".format(customtitle) if customtitle != '' else ''
-      reminder = Template(TEXT).substitute({RMDTITLE:customtitle,RMDLIST:reminders})
-      output = "{}{}".format(output,reminder)
+      check = themod.compile_output(cmd[RMDSEC], CONF_FILE)
+      if check:
+        customtitle, reminders = check
+        customtitle = "\n\n{}\n".format(customtitle) if customtitle != '' else ''
+        reminder = Template(TEXT).substitute({RMDTITLE:customtitle,RMDLIST:reminders})
+        output = "{}{}".format(output,reminder)
         
   return output if output != '' else False
   

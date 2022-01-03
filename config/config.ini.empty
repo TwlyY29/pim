@@ -1,0 +1,13 @@
+[Base]
+allowed_senders = a@b.cd
+receiver = me@somwhere.de
+dummy_sender = reminder@somewhere.de
+subject_in_reply = [reminder] Status
+
+@CONFIG_DAILY@
+
+@CONFIG_DAILY_ATTACHMENTS@
+
+@CONFIG_DAILY_WEATHER@
+
+@CONFIG_DAILY_EXPENSES@

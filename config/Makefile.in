@@ -162,6 +162,7 @@ DEFS = @DEFS@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
+EXPENSES_BASE_PATH = @EXPENSES_BASE_PATH@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -225,11 +226,13 @@ oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
 pkgpyexecdir = @pkgpyexecdir@
 pkgpythondir = @pkgpythondir@
+postfix_exists = @postfix_exists@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
 pyexecdir = @pyexecdir@
 pythondir = @pythondir@
+remind_exists = @remind_exists@
 runstatedir = @runstatedir@
 sbindir = @sbindir@
 sendmail_exists = @sendmail_exists@
@@ -242,8 +245,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 pimconf_DATA = config.ini
 pimconfdir = $(PIM_CONFDIR)
-EXTRA_DIST = config.ini.in config_getweather
-do_substitution = sed -e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' 
+EXTRA_DIST = config.ini.empty config_daily config_attachments config_getweather config_expenses
+do_substitution = sed -e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' -e 's,[@]DAILY_BASE_PATH[@],$(DAILY_BASE_PATH),g' -e 's,[@]EXPENSES_BASE_PATH[@],$(EXPENSES_BASE_PATH),g'
 all: all-am
 
 .SUFFIXES:
@@ -460,15 +463,34 @@ uninstall-am: uninstall-pimconfDATA
 .PRECIOUS: Makefile
 
 
-@INSTALL_DAILY_WEATHER_TRUE@$(pimconf_DATA): $(srcdir)/config.ini.in Makefile
-@INSTALL_DAILY_WEATHER_TRUE@	$(do_substitution) < $(srcdir)/config.ini.in > $(pimconf_DATA)
-@INSTALL_DAILY_WEATHER_TRUE@	$(do_substitution) < $(srcdir)/config_getweather >> $(pimconf_DATA)
+$(srcdir)/config.ini.in:
+	cp $(srcdir)/config.ini.empty $(srcdir)/config.ini.in
 
-@INSTALL_DAILY_WEATHER_FALSE@$(pimconf_DATA): Makefile
-@INSTALL_DAILY_WEATHER_FALSE@	$(do_substitution) < $(srcdir)/config.ini.in > $(pimconf_DATA)
+@INSTALL_DAILY_TRUE@make_daily: $(srcdir)/config.ini.in
+@INSTALL_DAILY_TRUE@	sed -e '/[@]CONFIG_DAILY[@]/ {' -e 'r $(srcdir)/config_daily' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+@INSTALL_DAILY_FALSE@make_daily:
+@INSTALL_DAILY_FALSE@	sed -i -e '/[@]CONFIG_DAILY[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_ATTACHMENTS_TRUE@make_daily_attachments: $(srcdir)/config.ini.in
+@INSTALL_DAILY_ATTACHMENTS_TRUE@	sed -e '/[@]CONFIG_DAILY_ATTACHMENTS[@]/ {' -e 'r $(srcdir)/config_attachments' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+@INSTALL_DAILY_ATTACHMENTS_FALSE@make_daily_attachments:
+@INSTALL_DAILY_ATTACHMENTS_FALSE@	sed -i -e '/[@]CONFIG_DAILY_ATTACHMENTS[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_WEATHER_TRUE@make_daily_weather: $(srcdir)/config.ini.in
+@INSTALL_DAILY_WEATHER_TRUE@	sed -e '/[@]CONFIG_DAILY_WEATHER[@]/ {' -e 'r $(srcdir)/config_getweather' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+@INSTALL_DAILY_WEATHER_FALSE@make_daily_weather:
+@INSTALL_DAILY_WEATHER_FALSE@	sed -i -e '/[@]CONFIG_DAILY_WEATHER[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_EXPENSES_CONFIG_TRUE@make_daily_expenses: $(srcdir)/config.ini.in
+@INSTALL_EXPENSES_CONFIG_TRUE@	sed -e '/[@]CONFIG_DAILY_EXPENSES[@]/ {' -e 'r $(srcdir)/config_expenses' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+@INSTALL_EXPENSES_CONFIG_FALSE@make_daily_expenses:
+@INSTALL_EXPENSES_CONFIG_FALSE@	sed -i -e '/[@]CONFIG_DAILY_EXPENSES[@]/d' $(srcdir)/config.ini.in
+
+$(pimconf_DATA): $(srcdir)/config.ini.in make_daily make_daily_attachments make_daily_expenses make_daily_weather Makefile
+	$(do_substitution) < $(srcdir)/config.ini.in > $(pimconf_DATA)
 
 dist-hook:
-	rm -f $(distdir)/$(pimconf_DATA)
+	rm -f $(distdir)/$(pimconf_DATA) $(distdir)/config.ini.in
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
