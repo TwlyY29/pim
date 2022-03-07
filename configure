@@ -3096,6 +3096,12 @@ fi
 
 if test "x$enable_dailyweather" = "xyes"; then :
 
+      if test "x$HAVE_PYMOD_CONFIGPARSER" = x"no"; then :
+  as_fn_error $? "missing python module: configparser" "$LINENO" 5
+fi
+      if test "x$HAVE_PYMOD_DATEPARSER" = x"no"; then :
+  as_fn_error $? "missing python module: dateparser" "$LINENO" 5
+fi
       if test "x$HAVE_PYMOD_REQUESTS" = x"no"; then :
   as_fn_error $? "missing python module: requests" "$LINENO" 5
 fi

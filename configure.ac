@@ -78,6 +78,8 @@ AS_IF([test "x$enable_daily" = "xyes"],
 
 AS_IF([test "x$enable_dailyweather" = "xyes"],
       [
+      AS_IF([test "x$HAVE_PYMOD_CONFIGPARSER" = x"no"], [AC_MSG_ERROR([missing python module: configparser])])
+      AS_IF([test "x$HAVE_PYMOD_DATEPARSER" = x"no"], [AC_MSG_ERROR([missing python module: dateparser])])
       AS_IF([test "x$HAVE_PYMOD_REQUESTS" = x"no"], [AC_MSG_ERROR([missing python module: requests])])
       AS_IF([test "x$enable_daily" = "xno"], [AC_MSG_ERROR([turned on daily weather report but disabled daily])])
       ])
