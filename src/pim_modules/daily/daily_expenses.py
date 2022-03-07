@@ -71,6 +71,10 @@ def compile_output(CONF_SEC, CONF_FILE):
             if STATS_PER_CATEGORY and is_expense:
               stats[line[ind_category]] += amount
           
+          months = diff_month(datetime.now(), last_monthly_plus)
+          if months > 0:
+            month_amount += MONTHLY_PLUS * months
+          
           month_amount = round(month_amount, 2)
           rest_of_month = rest_days_in_month()
           daily_avg = round(month_amount / rest_of_month, 2)
@@ -88,5 +92,5 @@ def compile_output(CONF_SEC, CONF_FILE):
     return title,False
     
 if __name__ == '__main__':
-  title, reminder = compile_output('daily_expenses','config.ini')
+  title, reminder = compile_output('daily_expenses','../../../config/config.ini.testing')
   print(reminder)
