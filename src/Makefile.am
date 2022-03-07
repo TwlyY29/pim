@@ -12,6 +12,12 @@ do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 		-e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
 		-e 's,[@]VERSION[@],$(VERSION),g'
 
+if PIM_FILE_LOG_ACTIVATED
+do_substitution += -e 's,[@]PIM_FILE_LOG_ACTIVATED[@],True,g'
+else
+do_substitution += -e 's,[@]PIM_FILE_LOG_ACTIVATED[@],False,g'
+endif
+
 mainreceiver: mainreceiver.in Makefile
 	$(do_substitution) < $(srcdir)/mainreceiver.in > mainreceiver
 	chmod +x mainreceiver

@@ -57,6 +57,11 @@ AC_ARG_ENABLE([dailyattachments],
 [enable_dailyattachments="$enableval"],[enable_dailyattachments="no"])
 AM_CONDITIONAL([INSTALL_DAILY_ATTACHMENTS], [test "x$enable_dailyattachments" = "xyes"])
 
+AC_ARG_ENABLE([filelog],
+[AS_HELP_STRING([--enable-filelog],[Turn on PIMs file log. Default is disabled.])],
+[enable_filelog="$enableval"],[enable_filelog="no"])
+AM_CONDITIONAL([PIM_FILE_LOG_ACTIVATED], [test "x$enable_filelog" = "xyes"])
+
 AS_IF([test "x$enable_daily" = "xyes"],
       [
       AX_PROG_PERL_MODULES( iCal::Parser, , [AC_MSG_ERROR([perl module iCal::Parser required, but not found.])])

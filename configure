@@ -590,6 +590,8 @@ remind_exists
 postfix_exists
 sendmail_exists
 PERL
+PIM_FILE_LOG_ACTIVATED_FALSE
+PIM_FILE_LOG_ACTIVATED_TRUE
 INSTALL_DAILY_ATTACHMENTS_FALSE
 INSTALL_DAILY_ATTACHMENTS_TRUE
 INSTALL_DAILY_WEATHER_FALSE
@@ -694,6 +696,7 @@ enable_expenses
 enable_dailyexpenses
 enable_dailyweather
 enable_dailyattachments
+enable_filelog
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1340,6 +1343,7 @@ Optional Features:
   --enable-dailyattachments
                           Turn on attachments to daily report. Default is
                           disabled.
+  --enable-filelog        Turn on PIMs file log. Default is disabled.
 
 Some influential environment variables:
   PYTHON      the Python interpreter
@@ -2869,6 +2873,22 @@ else
 fi
 
 
+# Check whether --enable-filelog was given.
+if test "${enable_filelog+set}" = set; then :
+  enableval=$enable_filelog; enable_filelog="$enableval"
+else
+  enable_filelog="no"
+fi
+
+ if test "x$enable_filelog" = "xyes"; then
+  PIM_FILE_LOG_ACTIVATED_TRUE=
+  PIM_FILE_LOG_ACTIVATED_FALSE='#'
+else
+  PIM_FILE_LOG_ACTIVATED_TRUE='#'
+  PIM_FILE_LOG_ACTIVATED_FALSE=
+fi
+
+
 if test "x$enable_daily" = "xyes"; then :
 
 
@@ -3281,6 +3301,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${INSTALL_DAILY_ATTACHMENTS_TRUE}" && test -z "${INSTALL_DAILY_ATTACHMENTS_FALSE}"; then
   as_fn_error $? "conditional \"INSTALL_DAILY_ATTACHMENTS\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${PIM_FILE_LOG_ACTIVATED_TRUE}" && test -z "${PIM_FILE_LOG_ACTIVATED_FALSE}"; then
+  as_fn_error $? "conditional \"PIM_FILE_LOG_ACTIVATED\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 

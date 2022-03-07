@@ -16,6 +16,7 @@ from pim_mailhelper.functions import parseSender, parseHeader, replyStatus
 
 ALLOWED_MAILADDRESSES=[] # only mails from these addresses will be accepted
 
+PIM_FILE_LOG = @PIM_FILE_LOG_ACTIVATED@
 BASEPATH = '@RCV_BASE_PATH@'
 # ~ SAVEMAIL = os.path.join(BASEPATH,'lastmail') # kind-of-debug-feature. this file holds the last mail received. 
 SAVEMAIL = ''
@@ -23,8 +24,10 @@ REPLYSIGNS=('re:','aw:') # prefixes for answered mails
 
 def initLogger():
     import logging
+    if not PIM_FILE_LOG:
+      import sys
     logger = logging.getLogger('mainreceiver')
-    hdlr = logging.FileHandler(os.path.join(BASEPATH,'pim.log'))
+    hdlr = logging.FileHandler(os.path.join(BASEPATH,'pim.log')) if PIM_FILE_LOG else logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     hdlr.setFormatter(formatter)
     logger.addHandler(hdlr) 

@@ -86,6 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+@PIM_FILE_LOG_ACTIVATED_TRUE@am__append_1 = -e 's,[@]PIM_FILE_LOG_ACTIVATED[@],True,g'
+@PIM_FILE_LOG_ACTIVATED_FALSE@am__append_2 = -e 's,[@]PIM_FILE_LOG_ACTIVATED[@],False,g'
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/m4_ax_prog_perl_modules.m4 \
@@ -307,15 +309,13 @@ SUBDIRS = pim_mailhelper pim_modules
 bin_SCRIPTS = mainreceiver sendreminder
 CLEANFILES = $(bin_SCRIPTS)
 EXTRA_DIST = mainreceiver.in sendreminder.in
-do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
-		-e 's,[@]PYTHON[@],$(PYTHON),g' \
-		-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
-		-e 's,[@]RCV_BASE_PATH[@],$(RCV_BASE_PATH),g' \
-		-e 's,[@]pimconfdir[@],$(PIM_CONFDIR),g' \
-		-e 's,[@]PACKAGE_NAME[@],$(PACKAGE_NAME),g' \
-		-e 's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' \
-		-e 's,[@]VERSION[@],$(VERSION),g'
-
+do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' -e \
+	's,[@]PYTHON[@],$(PYTHON),g' -e 's,[@]PACKAGE[@],$(PACKAGE),g' \
+	-e 's,[@]RCV_BASE_PATH[@],$(RCV_BASE_PATH),g' -e \
+	's,[@]pimconfdir[@],$(PIM_CONFDIR),g' -e \
+	's,[@]PACKAGE_NAME[@],$(PACKAGE_NAME),g' -e \
+	's,[@]PACKAGE_BUGREPORT[@],$(PACKAGE_BUGREPORT),g' -e \
+	's,[@]VERSION[@],$(VERSION),g' $(am__append_1) $(am__append_2)
 all: all-recursive
 
 .SUFFIXES:
