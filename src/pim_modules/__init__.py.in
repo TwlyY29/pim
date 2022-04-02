@@ -48,7 +48,7 @@ def getoutput():
       msg = ''
       try:
         msg = getattr(_thefuncs,_themod.MODULE_OUTPUT)()
-      except Exception e:
+      except BaseException as e:
         msg = f"Error in module '{m}': '{e.get_message()}'"
       output.append(msg)
   return output
