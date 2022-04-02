@@ -45,7 +45,12 @@ def getoutput():
     _themod = importlib.import_module(m)
     if _themod.MODULE_OUTPUT:
       _thefuncs = importlib.import_module(".{}".format(_themod.MODULE_OUTPUT),m)
-      output.append(getattr(_thefuncs,_themod.MODULE_OUTPUT)())
+      msg = ''
+      try:
+        msg = getattr(_thefuncs,_themod.MODULE_OUTPUT)()
+      except Exception e:
+        msg = f"Error in module '{m}': '{e.get_message()}'"
+      output.append(msg)
   return output
   
   

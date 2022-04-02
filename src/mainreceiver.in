@@ -47,7 +47,7 @@ accept = False
 
 sender = parseSender(msg['from'])
 if sender == 'unknown':
-  logger.warn('could not parse sender from %s', msg['from'])
+  logger.warning('could not parse sender from %s', msg['from'])
   sys.exit(1)
 
 # accept message?

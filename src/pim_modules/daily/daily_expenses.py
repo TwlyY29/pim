@@ -77,8 +77,12 @@ def compile_output(CONF_SEC, CONF_FILE):
           
           month_amount = round(month_amount, 2)
           rest_of_month = rest_days_in_month()
-          daily_avg = round(month_amount / rest_of_month, 2)
-          out = f"For this month, you have {month_amount}€ left,\nthat's {daily_avg}€ for all of the {rest_of_month} days left of {datetime.strftime(datetime.now(), '%B')}.\n"
+          if rest_of_month > 0:
+            daily_avg = round(month_amount / rest_of_month, 2)
+            out = f"For this month, you have {month_amount}€ left,\nthat's {daily_avg}€ for all of the {rest_of_month} days left of {datetime.strftime(datetime.now(), '%B')}.\n"
+          else:
+            out = f"For this month, you have {month_amount}€ left.\nHang in there. Today's last day of {datetime.strftime(datetime.now(), '%B')}!\n"
+            
           
           if STATS_PER_CATEGORY:
             stats_sorted = sorted(stats.items(),key=lambda k_v: k_v[1],reverse=True)
