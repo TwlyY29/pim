@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+# pim_module: dailycaldav
+# part of the @PACKAGE_NAME@, v. @VERSION@
+# @PACKAGE_BUGREPORT@
+
+HANDLER_ACCEPTS_REPLY = False
+MODULE_OUTPUT = 'getreminders'
+MODULE_ATTCHMNT = False
+CONF_FILE= '@pimconfdir@/config.ini'

@@ -1,6 +1,6 @@
 pimconf_DATA=config.ini
 pimconfdir=$(PIM_CONFDIR)
-EXTRA_DIST = config.ini.empty config_daily config_attachments config_getweather config_expenses
+EXTRA_DIST = config.ini.empty config_daily config_attachments config_getweather config_expenses config_dailycaldav
 
 do_substitution = sed -e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' -e 's,[@]DAILY_BASE_PATH[@],$(DAILY_BASE_PATH),g' -e 's,[@]EXPENSES_BASE_PATH[@],$(EXPENSES_BASE_PATH),g'
 
@@ -39,7 +39,15 @@ make_daily_expenses:
 	sed -i -e '/[@]CONFIG_DAILY_EXPENSES[@]/d' $(srcdir)/config.ini.in
 endif
 
-$(pimconf_DATA): $(srcdir)/config.ini.in make_daily make_daily_attachments make_daily_expenses make_daily_weather Makefile
+if INSTALL_DAILYCALDAV
+make_dailycaldav: $(srcdir)/config.ini.in
+	sed -e '/[@]CONFIG_DAILYCALDAV[@]/ {' -e 'r $(srcdir)/config_dailycaldav' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+else !INSTALL_DAILYCALDAV
+make_dailycaldav:
+	sed -i -e '/[@]CONFIG_DAILYCALDAV[@]/d' $(srcdir)/config.ini.in
+endif
+
+$(pimconf_DATA): $(srcdir)/config.ini.in make_daily make_daily_attachments make_daily_expenses make_daily_weather make_dailycaldav Makefile
 	$(do_substitution) < $(srcdir)/config.ini.in > $(pimconf_DATA)
 
 dist-hook:

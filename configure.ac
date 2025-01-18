@@ -1,5 +1,5 @@
 AC_INIT([Personal Information Manager],
-        0.1.3,
+        0.1.4,
         TWlyY29@gmail.com,
         pim,
         http://www.mircoschoenfeld.de)
@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE([foreign])
 AM_PATH_PYTHON([3.5])
 
 AC_CONFIG_FILES([Makefile src/Makefile src/pim_mailhelper/Makefile src/pim_modules/Makefile config/Makefile cron/Makefile])
-AC_CONFIG_FILES([src/pim_modules/daily/Makefile src/pim_modules/expenses/Makefile])
+AC_CONFIG_FILES([src/pim_modules/daily/Makefile src/pim_modules/expenses/Makefile src/pim_modules/dailycaldav/Makefile])
 
 AC_SUBST(RCV_BASE_PATH,"$localstatedir/log/")
 AC_ARG_VAR(RCV_BASE_PATH, 'set location of log output dir')
@@ -30,6 +30,7 @@ AC_CONFIG_MACRO_DIRS([m4])
 AX_PYTHON_MODULE(dateparser, "", python3)
 AX_PYTHON_MODULE([requests], "", python3)
 AX_PYTHON_MODULE(configparser, "", python3)
+AX_PYTHON_MODULE(caldav, "", python3)
 
 AC_ARG_ENABLE([daily],
 [AS_HELP_STRING([--disable-daily],[Turn off daily. Default is enabled.])],
@@ -56,6 +57,11 @@ AC_ARG_ENABLE([dailyattachments],
 [AS_HELP_STRING([--enable-dailyattachments],[Turn on attachments to daily report. Default is disabled.])],
 [enable_dailyattachments="$enableval"],[enable_dailyattachments="no"])
 AM_CONDITIONAL([INSTALL_DAILY_ATTACHMENTS], [test "x$enable_dailyattachments" = "xyes"])
+
+AC_ARG_ENABLE([dailycaldav],
+[AS_HELP_STRING([--enable-dailycaldav],[Turn off dailycaldav. Default is disabled.])],
+[enable_dailycaldav="$enableval"],[enable_dailycaldav="no"])
+AM_CONDITIONAL([INSTALL_DAILYCALDAV], [test "x$enable_dailycaldav" = "xyes" ])
 
 AC_ARG_ENABLE([filelog],
 [AS_HELP_STRING([--enable-filelog],[Turn on PIMs file log. Default is disabled.])],
@@ -92,6 +98,21 @@ AS_IF([test "x$enable_dailyexpenses" = "xyes"],
 AS_IF([test "x$enable_dailyattachments" = "xyes"],
       [
       AS_IF([test "x$enable_daily" = "xno"], [AC_MSG_ERROR([turned on daily attachments but disabled daily])])
+      ])
+      
+AS_IF([test "x$enable_dailycaldav" = "xyes"],
+      [
+      AS_IF([test "x$HAVE_PYMOD_CONFIGPARSER" = x"no"], [AC_MSG_ERROR([missing python module: configparser])])
+      AS_IF([test "x$HAVE_PYMOD_DATEPARSER" = x"no"], [AC_MSG_ERROR([missing python module: dateparser])])
+      AS_IF([test "x$HAVE_PYMOD_CALDAV" = x"no"], [AC_MSG_ERROR([missing python module: caldav])])
+      AC_CHECK_PROG(sendmail_exists,sendmail,yes)
+      AS_IF([test "x$sendmail_exists" != "xyes"], [AC_MSG_ERROR([sendmail required, but not found.])])
+      
+      AC_CHECK_PROG(postfix_exists,postfix,yes)
+      AS_IF([test "x$postfix_exists" != "xyes"], [AC_MSG_ERROR([postfix required, but not found.])])
+      
+      AC_CHECK_PROG(remind_exists,remind,yes)
+      AS_IF([test "x$remind_exists" != "xyes"], [AC_MSG_ERROR([remind required, but not found.])])
       ])
 
 AC_SUBST(VERSION)

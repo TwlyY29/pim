@@ -9,9 +9,13 @@ if INSTALL_EXPENSES
   MAYBE_EXPENSES = expenses
 endif
 
+if INSTALL_DAILYCALDAV
+  MAYBE_DAILYCALDAV = dailycaldav
+endif
+
 EXTRA_DIST = __init__.py.in
 
-SUBDIRS = $(MAYBE_DAILY) $(MAYBE_EXPENSES)
+SUBDIRS = $(MAYBE_DAILY) $(MAYBE_EXPENSES) $(MAYBE_DAILYCALDAV)
 
 do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 		-e 's,[@]pimconfdir[@],$(PIM_CONFDIR),g'\

@@ -11,3 +11,5 @@ subject_in_reply = [reminder] Status
 @CONFIG_DAILY_WEATHER@
 
 @CONFIG_DAILY_EXPENSES@
+
+@CONFIG_DAILYCALDAV@
