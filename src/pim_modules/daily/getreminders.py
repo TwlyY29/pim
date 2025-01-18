@@ -38,7 +38,7 @@ def parse_command(cmd):
   
 def parse_entries(conf):
   entries = []
-  referrers = tuple(SUBMODS.keys())
+  referrers = tuple(SUBMODS)
   for sec in conf.sections():
     if sec.startswith('daily_') and sec != 'daily_attachments':
       if not sec.startswith(referrers):
@@ -47,7 +47,7 @@ def parse_entries(conf):
         entries.append({RMDTITLE:title,RMDCMD:command})
       else:
         key = sec[0:sec.rfind('_')] if sec.count('_') > 1 else sec
-        if SUBMODS[key]:
+        if key in SUBMODS:
           entries.append({RMDMOD:key, RMDSEC:sec})
   return entries
 

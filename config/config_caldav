@@ -1,0 +1,40 @@
+[dailycaldav]
+; get overdue todos
+get_overdue=true
+; get todos with due date in future
+get_futuredue=true
+; get todos without due date
+get_withoutdue=false
+; or get all todos
+; get_all=true
+; use todos with due date so many days in the future
+futuredue_remind_ahead_in_days=3
+; remind directives that come after the MSG part in todos with due date in the future
+futuredue_aftermsg=(%%v %%b)
+; remind directives that come after the REM part in todos without a due date
+withoutdue_afterdate=
+; remind directives that come after the MSG part in todos without a due date
+withoutdue_aftermsg=
+; show priority of reminders
+show_priority=true
+; what character to use to indicate priority
+show_priority_char=!
+; show indicator for overdue todos
+show_overdue=true
+; what message to use as indicator
+show_overdue_msg=[overdue since $DATE]
+resources=server1 server2
+
+[dailycaldav_server1]
+type=ics
+url=https://kloud.de/todoliste.ics
+
+[dailycaldav_server2]
+type=caldav
+url=https://server2.de
+user=user
+passwd='highlyclasified'
+todolists=personal work
+
+[dailycaldav_server2_personal]
+get_withoutdue=yes

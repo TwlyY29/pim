@@ -248,7 +248,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 pimconf_DATA = config.ini
 pimconfdir = $(PIM_CONFDIR)
-EXTRA_DIST = config.ini.empty config_daily config_attachments config_getweather config_expenses config_dailycaldav
+EXTRA_DIST = config.ini.empty config_daily config_attachments config_getweather config_expenses config_caldav
 do_substitution = sed -e 's,[@]STD_REMINDER_FILE[@],$(STD_REMINDER_FILE),g' -e 's,[@]DAILY_BASE_PATH[@],$(DAILY_BASE_PATH),g' -e 's,[@]EXPENSES_BASE_PATH[@],$(EXPENSES_BASE_PATH),g'
 all: all-am
 
@@ -470,30 +470,34 @@ $(srcdir)/config.ini.in:
 
 @INSTALL_DAILY_TRUE@make_daily: $(srcdir)/config.ini.in
 @INSTALL_DAILY_TRUE@	sed -e '/[@]CONFIG_DAILY[@]/ {' -e 'r $(srcdir)/config_daily' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_TRUE@make_daily_weather: $(srcdir)/config.ini.in
+@INSTALL_DAILY_TRUE@	sed -e '/[@]CONFIG_DAILY_WEATHER[@]/ {' -e 'r $(srcdir)/config_getweather' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_TRUE@make_daily_expenses: $(srcdir)/config.ini.in
+@INSTALL_DAILY_TRUE@	sed -e '/[@]CONFIG_DAILY_EXPENSES[@]/ {' -e 'r $(srcdir)/config_expenses' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_TRUE@make_daily_caldav: $(srcdir)/config.ini.in
+@INSTALL_DAILY_TRUE@	sed -e '/[@]CONFIG_DAILY_CALDAV[@]/ {' -e 'r $(srcdir)/config_caldav' -e 'd' -e '}' -i $(srcdir)/config.ini.in
+
 @INSTALL_DAILY_FALSE@make_daily:
 @INSTALL_DAILY_FALSE@	sed -i -e '/[@]CONFIG_DAILY[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_FALSE@make_daily_weather:
+@INSTALL_DAILY_FALSE@	sed -i -e '/[@]CONFIG_DAILY_WEATHER[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_FALSE@make_daily_expenses:
+@INSTALL_DAILY_FALSE@	sed -i -e '/[@]CONFIG_DAILY_EXPENSES[@]/d' $(srcdir)/config.ini.in
+
+@INSTALL_DAILY_FALSE@make_daily_caldav:
+@INSTALL_DAILY_FALSE@	sed -i -e '/[@]CONFIG_DAILY_CALDAV[@]/d' $(srcdir)/config.ini.in
 
 @INSTALL_DAILY_ATTACHMENTS_TRUE@make_daily_attachments: $(srcdir)/config.ini.in
 @INSTALL_DAILY_ATTACHMENTS_TRUE@	sed -e '/[@]CONFIG_DAILY_ATTACHMENTS[@]/ {' -e 'r $(srcdir)/config_attachments' -e 'd' -e '}' -i $(srcdir)/config.ini.in
 @INSTALL_DAILY_ATTACHMENTS_FALSE@make_daily_attachments:
 @INSTALL_DAILY_ATTACHMENTS_FALSE@	sed -i -e '/[@]CONFIG_DAILY_ATTACHMENTS[@]/d' $(srcdir)/config.ini.in
 
-@INSTALL_DAILY_WEATHER_TRUE@make_daily_weather: $(srcdir)/config.ini.in
-@INSTALL_DAILY_WEATHER_TRUE@	sed -e '/[@]CONFIG_DAILY_WEATHER[@]/ {' -e 'r $(srcdir)/config_getweather' -e 'd' -e '}' -i $(srcdir)/config.ini.in
-@INSTALL_DAILY_WEATHER_FALSE@make_daily_weather:
-@INSTALL_DAILY_WEATHER_FALSE@	sed -i -e '/[@]CONFIG_DAILY_WEATHER[@]/d' $(srcdir)/config.ini.in
-
-@INSTALL_EXPENSES_CONFIG_TRUE@make_daily_expenses: $(srcdir)/config.ini.in
-@INSTALL_EXPENSES_CONFIG_TRUE@	sed -e '/[@]CONFIG_DAILY_EXPENSES[@]/ {' -e 'r $(srcdir)/config_expenses' -e 'd' -e '}' -i $(srcdir)/config.ini.in
-@INSTALL_EXPENSES_CONFIG_FALSE@make_daily_expenses:
-@INSTALL_EXPENSES_CONFIG_FALSE@	sed -i -e '/[@]CONFIG_DAILY_EXPENSES[@]/d' $(srcdir)/config.ini.in
-
-@INSTALL_DAILYCALDAV_TRUE@make_dailycaldav: $(srcdir)/config.ini.in
-@INSTALL_DAILYCALDAV_TRUE@	sed -e '/[@]CONFIG_DAILYCALDAV[@]/ {' -e 'r $(srcdir)/config_dailycaldav' -e 'd' -e '}' -i $(srcdir)/config.ini.in
-@INSTALL_DAILYCALDAV_FALSE@make_dailycaldav:
-@INSTALL_DAILYCALDAV_FALSE@	sed -i -e '/[@]CONFIG_DAILYCALDAV[@]/d' $(srcdir)/config.ini.in
-
-$(pimconf_DATA): $(srcdir)/config.ini.in make_daily make_daily_attachments make_daily_expenses make_daily_weather make_dailycaldav Makefile
+$(pimconf_DATA): $(srcdir)/config.ini.in make_daily make_daily_caldav make_daily_attachments make_daily_expenses make_daily_weather Makefile
 	$(do_substitution) < $(srcdir)/config.ini.in > $(pimconf_DATA)
 
 dist-hook:

@@ -181,7 +181,7 @@ am__define_uniq_tagged_files = \
   unique=`for i in $$list; do \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
-DIST_SUBDIRS = daily expenses dailycaldav
+DIST_SUBDIRS = daily expenses
 am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
@@ -311,9 +311,8 @@ modules_PYTHON = __init__.py
 modulesdir = $(pythondir)/pim_modules
 @INSTALL_DAILY_TRUE@MAYBE_DAILY = daily
 @INSTALL_EXPENSES_TRUE@MAYBE_EXPENSES = expenses
-@INSTALL_DAILYCALDAV_TRUE@MAYBE_DAILYCALDAV = dailycaldav
 EXTRA_DIST = __init__.py.in
-SUBDIRS = $(MAYBE_DAILY) $(MAYBE_EXPENSES) $(MAYBE_DAILYCALDAV)
+SUBDIRS = $(MAYBE_DAILY) $(MAYBE_EXPENSES)
 do_substitution = sed -e 's,[@]pythondir[@],$(pythondir),g' \
 		-e 's,[@]pimconfdir[@],$(PIM_CONFDIR),g'\
 		-e 's,[@]PACKAGE_NAME[@],$(PACKAGE_NAME),g' \

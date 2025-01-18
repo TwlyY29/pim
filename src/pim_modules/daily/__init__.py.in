@@ -8,5 +8,4 @@ MODULE_OUTPUT = 'getreminders'
 MODULE_ATTCHMNT = 'getattachments'
 OUTFILE = '@STD_REMINDER_FILE@'
 CONF_FILE= '@pimconfdir@/config.ini'
-SUBMODS = {'daily_weather': @DAILY_WEATHER_ACTIVATED@,
-           'daily_expenses': @DAILY_EXPENSES_ACTIVATED@}
+SUBMODS = ['daily_weather', 'daily_expenses', 'daily_caldav']
