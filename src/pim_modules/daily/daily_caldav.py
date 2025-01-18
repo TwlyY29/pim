@@ -129,6 +129,8 @@ def remind(reminders):
   return output if output != '' else False
 
 def compile_output(conf_sec, CONF_FILE):
+  if conf_sec.strip() == 'daily_caldav':
+    return '',False
   output = ''
   config_all = read_config(CONF_FILE)
   
@@ -186,9 +188,10 @@ def compile_output(conf_sec, CONF_FILE):
         
   if output != '':
     return 'Your TODOs',output
-  else
+  else:
     return 'Your TODOs',False
 
 
 if __name__ == '__main__':
-  print(compile_output('daily_caldav_1', '../../../config/config.ini.testing'))
+  print(compile_output('daily_caldav', 'config/config.ini.testing'))
+  print(compile_output('daily_caldav_1', 'config/config.ini.testing'))

@@ -28,6 +28,7 @@ def format_weather(hourlies, part_of_day='morning'):
 
 def build_url(lon,lat,apikey):
   return f"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&exclude=current,minutely&units=metric&APPID={apikey}"
+  # ~ return f"https://api.openweathermap.org/data/2.5/onecall?lon=11.5783&lat=49.9481&exclude=current,minutely&units=metric&APPID=bfd263f010c070a04c1282352228df8e"
 
 def compile_output(conf_sec, CONF_FILE):
   output = ''
@@ -76,7 +77,7 @@ def compile_output(conf_sec, CONF_FILE):
   if output != '':
     return title,output
   else:
-    return title,False
+    return '',False
 
 if __name__ == '__main__':
   print(daily_weather('daily_weather_1'))

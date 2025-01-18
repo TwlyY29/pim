@@ -83,9 +83,10 @@ def getreminders():
       check = themod.compile_output(cmd[RMDSEC], CONF_FILE)
       if check:
         customtitle, reminders = check
-        customtitle = "\n\n{}\n".format(customtitle) if customtitle != '' else ''
-        reminder = Template(TEXT).substitute({RMDTITLE:customtitle,RMDLIST:reminders})
-        output = "{}{}".format(output,reminder)
+        if reminders != False:
+          customtitle = "\n\n{}\n".format(customtitle) if customtitle != '' else ''
+          reminder = Template(TEXT).substitute({RMDTITLE:customtitle,RMDLIST:reminders})
+          output = "{}{}".format(output,reminder)
         
   return output if output != '' else False
   
