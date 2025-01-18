@@ -6,6 +6,7 @@ from caldav.davclient import DAVClient
 from collections import defaultdict
 from subprocess import CalledProcessError, check_output
 
+from . import CONF_FILE
 today = datetime.now().date()
 
 def read_config():
